@@ -1,7 +1,10 @@
 #root {
-  max-width: 1280px;
+  width: 100%;
   margin: 0 auto;
   text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .card {
@@ -29,13 +32,13 @@
 
 .card button {
   width: 100%;
-  background-color: #ec6724;
   border-radius: 4px;
-
   margin: 10px 0;
-
-  color: #ffffff;
   font-size: 1.5em;
   line-height: 1;
   font-weight: 700;
+}
+
+.card h2 {
+  margin: 20px 0;
 }

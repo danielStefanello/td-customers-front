@@ -1,0 +1,40 @@
+.customer {
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  max-width: 100%;
+  width: 100vw;
+  height: 100vh;
+  background-color: #f5f5f5;
+  justify-items: center;
+}
+
+.addCustomer {
+  width: 100%;
+  border: solid 2px #ec6724;
+  border-radius: 4px;
+  background-color: #f5f5f5;
+
+  color: #ec6724;
+}
+
+.customerContent {
+  width: 100%;
+  max-width: 1200px;
+}
+
+.customerContent > div {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.customerContent > div > div {
+  flex: 0 0 calc(25% - 14px);
+}
