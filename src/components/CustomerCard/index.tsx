@@ -1,9 +1,7 @@
-function Customer() {
+export default function CustomerCard() {
   return (
     <>
       <p>This is customer</p>
     </>
   );
 }
-
-export default Customer;

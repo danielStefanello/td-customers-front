@@ -1,13 +1,20 @@
-import './App.css';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { UserProvider } from './contexts';
+import Home from './pages/Home';
+import ProtectedRoute from './components/ProtectedRoute';
+import Customers from './pages/Customers';
 
-function App() {
+export default function App() {
   return (
-    <div className='card'>
-      <h2>Olá, seja bem-vindo!</h2>
-      <input placeholder='Digite o seu nome:'></input>
-      <button>Entrar</button>
-    </div>
+    <UserProvider>
+      <BrowserRouter>
+        <Routes>
+          <Route path='/' element={<Home />} />
+          <Route element={<ProtectedRoute />}>
+            <Route path='/customers' element={<Customers />} />
+          </Route>
+        </Routes>
+      </BrowserRouter>
+    </UserProvider>
   );
 }
-
-export default App;
