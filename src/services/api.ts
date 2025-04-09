@@ -1,8 +1,24 @@
-import { ICustomer } from '../types';
+import {
+  ICustomer,
+  IListCustomerFilters,
+  IListCustomerResponse,
+} from '../types';
 
-export const listCustomers = async (): Promise<ICustomer[]> => {
+export const listCustomers = async (
+  filters?: IListCustomerFilters
+): Promise<IListCustomerResponse> => {
   try {
-    const response = await fetch('http://localhost:3000/customers', {
+    const queryParams = new URLSearchParams({
+      page: filters?.page?.toString() || '1',
+      limit: filters?.limit?.toString() || '16',
+      order: filters?.order || 'ASC',
+      sort: filters?.sort || 'id',
+      selected: String(!!filters?.selected),
+    });
+
+    const url = `http://localhost:3000/customers?${queryParams.toString()}`;
+
+    const response = await fetch(url, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
