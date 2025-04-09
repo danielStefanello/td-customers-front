@@ -59,3 +59,26 @@ export const updateCustomer = async (customer: ICustomer): Promise<void> => {
     throw error;
   }
 };
+
+export const createCustomer = async (
+  customer: Omit<ICustomer, 'id'>
+): Promise<ICustomer> => {
+  try {
+    const response = await fetch(`http://localhost:3000/customers`, {
+      method: 'POST',
+      body: JSON.stringify(customer),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error(`Erro HTTP: ${response.status}`);
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error('Falha ao criar o cliente:', error);
+    throw error;
+  }
+};

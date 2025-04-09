@@ -45,3 +45,13 @@
 .customerContent > div > div > button {
   margin-top: 10px;
 }
+
+.formCreateCustomer input {
+  font-size: 1em;
+  line-height: 1;
+  height: 40px;
+}
+
+.formCreateCustomer button {
+  margin-top: 5px;
+}

@@ -32,3 +32,11 @@
 .cardCustomer > div > a > img {
   width: 20px;
 }
+
+#createButton > p > span {
+  font-weight: 700;
+}
+
+#createButton > button {
+  margin-top: 20px;
+}
