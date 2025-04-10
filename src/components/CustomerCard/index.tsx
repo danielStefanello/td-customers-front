@@ -22,12 +22,14 @@ export default function CustomerCard({
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
+
+    const formattedValue = value.replace(',', '.');
+
     setFormData((prev) => ({
       ...prev,
-      [name]:
-        name === 'salary' || name === 'companyValue'
-          ? parseFloat(value) || undefined
-          : value,
+      [name]: ['salary', 'companyValue'].includes(name)
+        ? parseFloat(formattedValue) || 0
+        : value,
     }));
   };
 
@@ -56,6 +58,7 @@ export default function CustomerCard({
     setLoading(true);
     setIsEditing(true);
     try {
+      console.log('FORM DATA', formData);
       await updateCustomer(formData);
       onDelete();
     } catch (err) {
@@ -135,7 +138,8 @@ export default function CustomerCard({
           />
 
           <input
-            type='text'
+            type='number'
+            step='any'
             id='salary'
             name='salary'
             value={formData.salary}
@@ -145,7 +149,8 @@ export default function CustomerCard({
           />
 
           <input
-            type='text'
+            type='number'
+            step='any'
             id='companyValue'
             name='companyValue'
             value={formData.companyValue}
