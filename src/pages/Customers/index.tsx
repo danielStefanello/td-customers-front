@@ -39,10 +39,13 @@ export default function Customers() {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
+
+    const formattedValue = value.replace(',', '.');
+
     setFormData((prev) => ({
       ...prev,
       [name]: ['salary', 'companyValue'].includes(name)
-        ? parseFloat(value) || 0
+        ? parseFloat(formattedValue) || 0
         : value,
     }));
   };
@@ -215,7 +218,8 @@ export default function Customers() {
           />
 
           <input
-            type='text'
+            type='number'
+            step='any'
             id='salary'
             name='salary'
             value={formData.salary}
@@ -225,7 +229,8 @@ export default function Customers() {
           />
 
           <input
-            type='text'
+            type='number'
+            step='any'
             id='companyValue'
             name='companyValue'
             value={formData.companyValue}
