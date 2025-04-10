@@ -53,6 +53,13 @@ export default function Customers() {
     try {
       await createCustomer(formData);
       loadData();
+      setFormData({
+        name: '',
+        salary: 0,
+        companyValue: 0,
+        selected: false,
+      });
+      setPage(1);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Erro ao cadastrar');
     } finally {

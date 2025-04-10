@@ -11,7 +11,7 @@ export const listCustomers = async (
     const queryParams = new URLSearchParams({
       page: filters?.page?.toString() || '1',
       limit: filters?.limit?.toString() || '16',
-      order: filters?.order || 'ASC',
+      order: filters?.order || 'DESC',
       sort: filters?.sort || 'id',
       selected: String(!!filters?.selected),
     });

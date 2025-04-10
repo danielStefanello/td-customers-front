@@ -1,0 +1,32 @@
+.pagination div {
+  width: auto;
+  margin: 0 auto;
+}
+
+.pagination > div > button {
+  width: 35px;
+  height: 35px;
+  font-size: 1.142em;
+  font-weight: 700;
+  line-height: 1em;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.active {
+  background-color: transparent;
+  color: #000000;
+}
+
+.pagination-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  overflow: hidden;
+}
+
+.inactive {
+  cursor: none;
+}

@@ -1,3 +1,4 @@
+import './Pagination.css';
 import { IPaginationProps } from '../../types';
 
 export default function Pagination({
@@ -43,18 +44,22 @@ export default function Pagination({
 
   return (
     <div className='pagination'>
-      {visiblePages.map((page, index) => (
-        <button
-          key={index}
-          onClick={() => (typeof page === 'number' ? onPageChange(page) : null)}
-          disabled={page === '...' || disabled || page === currentPage}
-          className={page === currentPage ? 'active' : ''}
-          aria-label={`Página ${page}`}
-          aria-current={page === currentPage ? 'page' : undefined}
-        >
-          {page}
-        </button>
-      ))}
+      <div>
+        {visiblePages.map((page, index) => (
+          <button
+            key={index}
+            onClick={() =>
+              typeof page === 'number' ? onPageChange(page) : null
+            }
+            disabled={page === '...' || disabled || page === currentPage}
+            className={page === currentPage ? '' : 'active'}
+            aria-label={`Página ${page}`}
+            aria-current={page === currentPage ? 'page' : undefined}
+          >
+            {page}
+          </button>
+        ))}
+      </div>
     </div>
   );
 }
