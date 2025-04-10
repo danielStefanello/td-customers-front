@@ -10,6 +10,7 @@ import {
 } from '../../types';
 import { Modal } from '../../components/Modal';
 import Pagination from '../../components/Pagination';
+import { toast } from 'react-toastify';
 
 export default function Customers() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -73,29 +74,54 @@ export default function Customers() {
       try {
         setLoading(true);
         const data = await listCustomers({
-          page: filters?.page || page,
           limit: filters?.limit || limit,
+          page: filters?.page || page,
           selected: filters?.selected || selected,
         });
 
         setCustomers(data);
-        setTotalPages(Math.max(1, Math.ceil(data.count / data.limit)));
+        setTotalPages(Math.ceil(data.count / data.limit));
+
+        if (data.data.length === 0) {
+          toast.info('Nenhum cliente encontrado com esses filtros', {
+            autoClose: 3000,
+          });
+        }
       } catch (err) {
-        setError(err instanceof Error ? err.message : 'Erro desconhecido');
+        const message =
+          err instanceof Error ? err.message : 'Erro desconhecido';
+        toast.error(`Erro ao carregar: ${message}`);
+        setError(message);
       } finally {
         setLoading(false);
       }
     },
-    [page, limit, selected]
+    [limit, page, selected]
   );
 
   useEffect(() => {
     loadData();
   }, [loadData]);
 
+  useEffect(() => {
+    if (error) {
+      toast.error(`Erro: ${error}`, {
+        position: 'top-right',
+        autoClose: 5000,
+      });
+    }
+  }, [error]);
+
+  useEffect(() => {
+    if (!loading && customers.data.length === 0) {
+      toast.info('Nenhum cliente encontrado', {
+        position: 'top-right',
+        autoClose: 3000,
+      });
+    }
+  }, [customers.data.length, loading]);
+
   if (loading) return <div className='loading'>Carregando...</div>;
-  if (error) return <div className='error'>Erro: {error}</div>;
-  if (customers.data.length === 0) return <div>Nenhum cliente encontrado</div>;
 
   return (
     <div className='customer'>
@@ -114,13 +140,17 @@ export default function Customers() {
           </p>
         </div>
         <div>
-          {customers.data.map((customer) => (
-            <CustomerCard
-              key={customer.id}
-              customer={customer}
-              onDelete={loadData}
-            />
-          ))}
+          {customers.count ? (
+            customers.data.map((customer) => (
+              <CustomerCard
+                key={customer.id}
+                customer={customer}
+                onDelete={loadData}
+              />
+            ))
+          ) : (
+            <h3>Nenhum cliente encontrado</h3>
+          )}
         </div>
         <button className='addCustomer' onClick={() => setIsModalOpen(true)}>
           Criar cliente
