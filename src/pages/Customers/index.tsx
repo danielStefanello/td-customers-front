@@ -2,7 +2,11 @@ import './Customer.css';
 import NavBar from '../../components/NavBar';
 import CustomerCard from '../../components/CustomerCard';
 import { useCallback, useEffect, useState } from 'react';
-import { createCustomer, listCustomers } from '../../services/api';
+import {
+  createCustomer,
+  listCustomers,
+  updateCustomer,
+} from '../../services/api';
 import {
   ICustomer,
   IListCustomerFilters,
@@ -32,6 +36,7 @@ export default function Customers() {
   const [limit] = useState(16);
   const [selected, setSelected] = useState(false);
   const [totalPages, setTotalPages] = useState(1);
+  const [isSelectedView, setIsSelectedView] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -60,12 +65,34 @@ export default function Customers() {
         companyValue: 0,
         selected: false,
       });
+      toast.success('Cliente cadastrado com sucesso!');
       setPage(1);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Erro ao cadastrar');
     } finally {
       setLoading(false);
       setIsModalOpen(false);
+    }
+  };
+
+  const handleUpdateGroup = async (customers: ICustomer[]) => {
+    try {
+      setLoading(true);
+      await Promise.all(
+        customers.map(
+          async (c) => await updateCustomer({ ...c, selected: false })
+        )
+      );
+      toast.success(`${customers.length} clientes atualizados com sucesso!`, {
+        autoClose: 5000,
+      });
+      loadData();
+    } catch (err) {
+      toast.error(
+        err instanceof Error ? err.message : 'Erro ao atualizar grupo'
+      );
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -128,6 +155,7 @@ export default function Customers() {
       <NavBar
         onSelectedChange={(selected) => {
           setSelected(selected);
+          setIsSelectedView(selected);
           setPage(1);
         }}
         currentSelected={selected}
@@ -152,9 +180,24 @@ export default function Customers() {
             <h3>Nenhum cliente encontrado</h3>
           )}
         </div>
-        <button className='addCustomer' onClick={() => setIsModalOpen(true)}>
-          Criar cliente
-        </button>
+
+        {isSelectedView ? (
+          <button
+            className='addCustomer'
+            onClick={() => handleUpdateGroup(customers.data)}
+            disabled={loading || customers.count === 0}
+          >
+            {loading ? 'Atualizando...' : 'Limpar clientes selecionados'}
+          </button>
+        ) : (
+          <button
+            className='addCustomer'
+            onClick={() => setIsModalOpen(true)}
+            disabled={loading}
+          >
+            Criar cliente
+          </button>
+        )}
 
         <Pagination
           currentPage={page}
