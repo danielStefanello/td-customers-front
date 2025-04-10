@@ -5,6 +5,10 @@
 }
 
 :root {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+
   font-family: 'Inter', Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
@@ -43,6 +47,8 @@ body {
   display: flex;
   place-items: center;
   min-height: 100vh;
+  flex-direction: column;
+  position: relative;
 }
 
 h1 {

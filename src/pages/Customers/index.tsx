@@ -14,7 +14,6 @@ import {
 } from '../../types';
 import { Modal } from '../../components/Modal';
 import Pagination from '../../components/Pagination';
-import { toast } from 'react-toastify';
 
 export default function Customers() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -65,7 +64,6 @@ export default function Customers() {
         companyValue: 0,
         selected: false,
       });
-      toast.success('Cliente cadastrado com sucesso!');
       setPage(1);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Erro ao cadastrar');
@@ -83,13 +81,13 @@ export default function Customers() {
           async (c) => await updateCustomer({ ...c, selected: false })
         )
       );
-      toast.success(`${customers.length} clientes atualizados com sucesso!`, {
-        autoClose: 5000,
-      });
+
       loadData();
     } catch (err) {
-      toast.error(
-        err instanceof Error ? err.message : 'Erro ao atualizar grupo'
+      console.error(
+        err instanceof Error
+          ? err.message
+          : `Erro ao remover ${customers.length}`
       );
     } finally {
       setLoading(false);
@@ -110,14 +108,12 @@ export default function Customers() {
         setTotalPages(Math.ceil(data.count / data.limit));
 
         if (data.data.length === 0) {
-          toast.info('Nenhum cliente encontrado com esses filtros', {
-            autoClose: 3000,
-          });
+          console.info('Nenhum cliente encontrado com esses filtros');
         }
       } catch (err) {
         const message =
           err instanceof Error ? err.message : 'Erro desconhecido';
-        toast.error(`Erro ao carregar: ${message}`);
+        console.error(`Erro ao carregar: ${message}`);
         setError(message);
       } finally {
         setLoading(false);
@@ -132,19 +128,13 @@ export default function Customers() {
 
   useEffect(() => {
     if (error) {
-      toast.error(`Erro: ${error}`, {
-        position: 'top-right',
-        autoClose: 5000,
-      });
+      console.error(`Erro: ${error}`);
     }
   }, [error]);
 
   useEffect(() => {
     if (!loading && customers.data.length === 0) {
-      toast.info('Nenhum cliente encontrado', {
-        position: 'top-right',
-        autoClose: 3000,
-      });
+      console.info('Nenhum cliente encontrado');
     }
   }, [customers.data.length, loading]);
 
